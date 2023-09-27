@@ -1,18 +1,93 @@
+const rockImgSrc = "./images/rock.png"
+const paperImgSrc = "./images/paper.png"
+const scissorsImgSrc = "./images/scissors.png"
+
+const rockButton = document.querySelector('button#rock');
+const paperButton = document.querySelector('button#paper');
+const scissorsButton = document.querySelector('button#scissors');
+const goButton = document.querySelector('button#go');
+
+const playerSelectImage = document.querySelector("#player-select");
+const computerSelectImage = document.querySelector("#computer-select");
+
+const resultMessage = document.querySelector('.message')
+
+const computerScore = document.querySelector('#computer-score');
+const playerScore = document.querySelector('#player-score');
+
+rockButton.addEventListener('click', function(){
+    computerSelectImage.removeAttribute('src');
+    changePlayerChoiceImage('rock');
+    resultMessage.textContent = "Choose carefully, then click GO!";
+    goButton.disabled = false;
+})
+
+paperButton.addEventListener('click', function(){
+    computerSelectImage.removeAttribute('src');
+    changePlayerChoiceImage('paper');
+    resultMessage.textContent = "Choose carefully, then click GO!";
+    goButton.disabled = false;
+})
+
+scissorsButton.addEventListener('click', function(){
+    computerSelectImage.removeAttribute('src');
+    changePlayerChoiceImage('scissors');
+    resultMessage.textContent = "Choose carefully, then click GO!";
+    goButton.disabled = false;
+})
+
+goButton.addEventListener('click', function(){
+    goButton.disabled = true;
+    
+    const computerChoice = getComputerChoice();
+    changeComputerChoiceImage(computerChoice);
+
+    const playerChoice = playerSelectImage.dataset.selected;
+
+    const result = playGame(playerChoice, computerChoice);
+    const message = gameResultMessage(result, playerChoice, computerChoice);
+    resultMessage.textContent = message;
+    updateScore(result);
+    }
+)
+
+function changePlayerChoiceImage(playerChoice) {
+    switch(playerChoice) {
+        case "rock":
+            playerSelectImage.dataset.selected = 'rock';
+            playerSelectImage.src = rockImgSrc;
+            break;
+        case "paper":
+            playerSelectImage.dataset.selected = 'paper';
+            playerSelectImage.src = paperImgSrc;
+            break;
+        case "scissors":
+            playerSelectImage.dataset.selected = 'scissors';
+            playerSelectImage.src = scissorsImgSrc;
+            break;
+    }
+}
+
+function changeComputerChoiceImage(computerChoice) {
+    switch(computerChoice) {
+        case "rock":
+            computerSelectImage.dataset.selected = 'rock';
+            computerSelectImage.src = rockImgSrc;
+            break;
+        case "paper":
+            computerSelectImage.dataset.selected = 'paper';
+            computerSelectImage.src = paperImgSrc;
+            break;
+        case "scissors":
+            computerSelectImage.dataset.selected = 'scissors';
+            computerSelectImage.src = scissorsImgSrc;
+            break;
+    }
+}
+
 function getComputerChoice(){
     const choices = ['rock', 'paper', 'scissors'];
     return choices[Math.floor(Math.random() * 3)];
-}
-
-function getPlayerChoice(){
-    do {
-        const userInput = prompt("Rock, Paper, or Scissors?", "").toLowerCase();
-        const choices = ['rock', 'paper', 'scissors'];
-
-        if (choices.includes(userInput)) {
-            return userInput;
-        };
-        alert("Invalid input.")
-    } while (true); 
 }
 
 function playGame(playerSelection, computerSelection){
@@ -27,7 +102,7 @@ function playGame(playerSelection, computerSelection){
     }
 }
 
-function displayResult(result, playerSelection, computerSelection) {
+function gameResultMessage(result, playerSelection, computerSelection) {
     if (result === 1){
         playerSelection = playerSelection[0].toUpperCase() + playerSelection.substring(1,);
         return `You win! ${playerSelection} beats ${computerSelection}!`
@@ -39,13 +114,10 @@ function displayResult(result, playerSelection, computerSelection) {
     }
 }
 
-function game(reps = 5){
-    for (let i = 0; i < reps; i++) {
-        const player = getPlayerChoice();
-        const computer = getComputerChoice();
-        const result = playGame(player, computer);
-        console.log(displayResult(result, player, computer)); 
+function updateScore(result){
+    if (result === 1){
+        playerScore.textContent = Number.parseInt(playerScore.textContent) + 1;
+    } else if (result === -1){
+        computerScore.textContent = Number.parseInt(computerScore.textContent) + 1;
     }
 }
-
-game()
