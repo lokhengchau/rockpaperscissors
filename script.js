@@ -104,13 +104,15 @@ function playGame(playerSelection, computerSelection){
 
 function gameResultMessage(result, playerSelection, computerSelection) {
     if (result === 1){
+        const beat = playerSelection === 'scissors' ? 'beat' : 'beats';
         playerSelection = playerSelection[0].toUpperCase() + playerSelection.substring(1,);
-        return `You win! ${playerSelection} beats ${computerSelection}!`
+        return `You win! ${playerSelection} ${beat} ${computerSelection}!`
     } else if (result === 0){
         return "It's a tie!"
     } else {
+        const beat = computerSelection === 'scissors' ? 'beat' : 'beats';
         computerSelection = computerSelection[0].toUpperCase() + computerSelection.substring(1,);
-        return `Computer wins! ${computerSelection} beats ${playerSelection}!`;
+        return `Computer wins! ${computerSelection} ${beat} ${playerSelection}!`;
     }
 }
 
